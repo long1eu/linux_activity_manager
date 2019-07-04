@@ -12,6 +12,6 @@ add_executable(
         src/ProcessContainer.h
         src/SysInfo.h
         src/constants.h
-        src/util.h src/Process.cpp)
+        src/util.h src/Process.cpp src/ProcessParser.cpp src/ProcessContainer.cpp src/SysInfo.cpp src/util.cpp)
 
 target_link_libraries(${PROJECT_NAME} ncurses)
