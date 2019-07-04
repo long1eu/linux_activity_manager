@@ -18,18 +18,18 @@ void SysInfo::getOtherCores(int _size) {
 }
 
 void SysInfo::setLastCpuMeasures() {
-  this->lastCpuStats = ProcessParser::GetSysCpuPercent();
+  lastCpuStats = ProcessParser::GetSysCpuPercent();
 }
 void SysInfo::setCpuCoresStats() {
 // Getting data from files (previous data is required)
-  for (int i = 0; i < this->currentCpuCoresStats.size(); i++) {
-    this->currentCpuCoresStats[i] = ProcessParser::GetSysCpuPercent(to_string(i));
+  for (int i = 0; i < currentCpuCoresStats.size(); i++) {
+    currentCpuCoresStats[i] = ProcessParser::GetSysCpuPercent(to_string(i));
   }
-  for (int i = 0; i < this->currentCpuCoresStats.size(); i++) {
+  for (int i = 0; i < currentCpuCoresStats.size(); i++) {
     // after acquirement of data we are calculating every core percentage of usage
-    this->coresStats[i] = ProcessParser::PrintCpuStats(this->lastCpuCoresStats[i], this->currentCpuCoresStats[i]);
+    coresStats[i] = ProcessParser::PrintCpuStats(lastCpuCoresStats[i], currentCpuCoresStats[i]);
   }
-  this->lastCpuCoresStats = this->currentCpuCoresStats;
+  lastCpuCoresStats = currentCpuCoresStats;
 }
 void SysInfo::setAttributes() {
 // getting parsed data
