@@ -4,7 +4,7 @@
 
 #include "ProcessParser.h"
 
-vector<string> ProcessParser::getPidList() {
+vector<string> ProcessParser::GetPidList() {
   DIR *dir;
   // Basically, we are scanning /proc dir for all directories with numbers as their names
   // If we get valid check we store dir names in vector as list of machine pids
@@ -196,7 +196,7 @@ string ProcessParser::getOSName() {
 
 int ProcessParser::getTotalThreads() {
   int result = 0;
-  vector<string> _list = ProcessParser::getPidList();
+  vector<string> _list = ProcessParser::GetPidList();
   for (const auto &pid:_list) {
     //getting every process and reading their number of their threads
     try {
@@ -355,7 +355,7 @@ We use a formula to calculate overall activity of processor.
 }
 
 bool ProcessParser::isPidExisting(const string pid) {
-  for (auto &exist_pid : getPidList()) {
+  for (auto &exist_pid : GetPidList()) {
     if (exist_pid.compare(pid) == 0)
       return true;
   }

@@ -37,7 +37,7 @@ class ProcessParser {
   ~ProcessParser() = delete;
 
   static string getCmd(const string pid);
-  static vector<string> getPidList();
+  static vector<string> GetPidList();
   static string getVmSize(const string pid);
   static string getCpuPercent(const string pid);
   static long int getSysUpTime();
