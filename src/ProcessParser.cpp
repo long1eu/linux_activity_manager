@@ -1,9 +1,8 @@
-#include <utility>
-
 //
 // Created by Razvan Lung on 2019-07-04.
 //
 
+#include <utility>
 #include "ProcessParser.h"
 
 vector<string> ProcessParser::GetPidList() {
@@ -72,9 +71,9 @@ vector<string> ProcessParser::FetchValues(string &&path, const string &searchStr
   throw invalid_argument("Failed to find the search string.");
 }
 
-string ProcessParser::FetchValue(string &&path, int index, string searchString) {
+string ProcessParser::FetchValue(string &&path, int index, string search_string) {
   try {
-    return FetchValues(move(path), std::move(searchString))[index];
+    return FetchValues(move(path), std::move(search_string))[index];
   } catch (exception &e) {
     throw e;
   }
@@ -121,8 +120,7 @@ int ProcessParser::GetNumberOfCores() {
 string ProcessParser::GetSysKernelVersion() {
   try {
     return FetchValue(Path::basePath() + Path::versionPath(), 2, "Linux version ");
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     throw e;
   }
 }
@@ -307,16 +305,16 @@ float ProcessParser::GetSysRamPercent() {
 }
 
 string ProcessParser::PrintCpuStats(const vector<string> &values1, const vector<string> &values2) {
-  float activeTime = GetSysActiveCpuTime(values2) - GetSysActiveCpuTime(values1);
-  float idleTime = GetSysIdleCpuTime(values2) - GetSysIdleCpuTime(values1);
-  float totalTime = activeTime + idleTime;
-  float result = 100.0 * (activeTime / totalTime);
+  float active_time = GetSysActiveCpuTime(values2) - GetSysActiveCpuTime(values1);
+  float idle_time = GetSysIdleCpuTime(values2) - GetSysIdleCpuTime(values1);
+  float total_time = active_time + idle_time;
+  float result = 100.0 * (active_time / total_time);
   return to_string(result);
 }
 
 bool ProcessParser::IsPidExisting(const string &pid) {
-  for (auto &exist_pid : GetPidList()) {
-    if (exist_pid.compare(pid) == 0)
+  for (const string &exist_pid : GetPidList()) {
+    if (exist_pid == pid)
       return true;
   }
   return false;

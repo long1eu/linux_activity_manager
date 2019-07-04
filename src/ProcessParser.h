@@ -52,5 +52,5 @@ class ProcessParser {
  private:
   static string FetchValue(string &&path, int index);
   static vector<string> FetchValues(string &&path, const string &searchString);
-  static string FetchValue(string &&path, int index, string searchString);
+  static string FetchValue(string &&path, int index, string search_string);
 };

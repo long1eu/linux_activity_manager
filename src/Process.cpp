@@ -1,3 +1,7 @@
+//
+// Created by Razvan Lung on 2019-07-04.
+//
+
 #include "Process.h"
 
 void Process::pid(int pid) { pid_ = to_string(pid); }
@@ -18,10 +22,10 @@ string Process::process() {
   cpu_ = ProcessParser::GetCpuPercent(pid_);
 
   result << pid_ << "   " <<
-         user_ << "   " <<
-         mem_ << "   " <<
-         cpu_ << "   " <<
-         up_time_ << "   " <<
-         cmd_.substr(0, 50) << string(20, ' ');
+                          user_ << "   " <<
+                          mem_ << "   " <<
+                          cpu_ << "   " <<
+                          up_time_ << "   " <<
+                          cmd_.substr(0, 50) << string(20, ' ');
   return result.str();
 }
