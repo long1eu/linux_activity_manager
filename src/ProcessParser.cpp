@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by Razvan Lung on 2019-07-04.
 //
@@ -6,39 +8,34 @@
 
 vector<string> ProcessParser::GetPidList() {
   DIR *dir;
-  // Basically, we are scanning /proc dir for all directories with numbers as their names
-  // If we get valid check we store dir names in vector as list of machine pids
   vector<string> container;
   if (!(dir = opendir("/proc")))
     throw runtime_error(strerror(errno));
 
   while (dirent *dirp = readdir(dir)) {
-    // is this a directory?
     if (dirp->d_type != DT_DIR)
       continue;
-    // Is every character of the name a digit?
+
     if (all_of(dirp->d_name, dirp->d_name + strlen(dirp->d_name), [](char c) { return isdigit(c); })) {
-      container.push_back(dirp->d_name);
+      container.emplace_back(dirp->d_name);
     }
   }
-  //Validating process of directory closing
+
   if (closedir(dir))
     throw runtime_error(strerror(errno));
   return container;
 }
 
-string ProcessParser::GetCmd(string pid) {
+string ProcessParser::GetCmd(const string &pid) {
   try {
     string line;
     ifstream stream = Util::getStream((Path::basePath() + pid + Path::cmdPath()));
     getline(stream, line);
     return line;
-  }
-  catch (runtime_error &e) {
+  } catch (runtime_error &e) {
     throw e;
-  }
-  catch (exception &e) {
-    //Ignore this exception and return empty string
+  } catch (exception &e) {
+
   }
   return string(70, ' ');
 }
@@ -52,13 +49,12 @@ string ProcessParser::FetchValue(string &&path, int index) {
     istream_iterator<string> beg(buf), end;
     vector<string> values(beg, end);
     return values[index];
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     throw e;
   }
 }
 
-vector<string> ProcessParser::FetchValues(string &&path, string searchString) {
+vector<string> ProcessParser::FetchValues(string &&path, const string &searchString) {
   try {
     string line;
     ifstream stream = Util::getStream(path);
@@ -70,8 +66,7 @@ vector<string> ProcessParser::FetchValues(string &&path, string searchString) {
         return values;
       }
     }
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     throw e;
   }
   throw invalid_argument("Failed to find the search string.");
@@ -79,37 +74,30 @@ vector<string> ProcessParser::FetchValues(string &&path, string searchString) {
 
 string ProcessParser::FetchValue(string &&path, int index, string searchString) {
   try {
-    //TODO: Check if the index is in bounds
-    return FetchValues(move(path), searchString)[index];
-  }
-  catch (exception &e) {
+    return FetchValues(move(path), std::move(searchString))[index];
+  } catch (exception &e) {
     throw e;
   }
-  return "";
 }
 
 long int ProcessParser::GetSysUpTime() {
   try {
     return stoi(FetchValue(Path::basePath() + Path::upTimePath(), 0));
-  }
-  catch (invalid_argument &e) {
+  } catch (invalid_argument &e) {
     //Ignore this exception
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     throw e;
   }
   return 0;
 }
 
-string ProcessParser::GetProcUpTime(string pid) {
+string ProcessParser::GetProcUpTime(const string &pid) {
   try {
     return to_string(float(
         stof(FetchValue(Path::basePath() + pid + "/" + Path::statPath(), 13)) / sysconf(_SC_CLK_TCK)));
-  }
-  catch (runtime_error &e) {
+  } catch (runtime_error &e) {
     throw e;
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     //Ignore the rest of the exceptions
   }
   return "";
@@ -119,14 +107,12 @@ int ProcessParser::GetNumberOfCores() {
   // Get the number of host cpu cores
   try {
     string result = FetchValue(Path::basePath() + "cpuinfo", 3, "cpu cores");
-    if (result.size() != 0) {
+    if (!result.empty()) {
       return stoi(result);
     }
-  }
-  catch (invalid_argument &e) {
+  } catch (invalid_argument &e) {
     return 0;
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     throw e;
   }
   return 0;
@@ -141,14 +127,12 @@ string ProcessParser::GetSysKernelVersion() {
   }
 }
 
-string ProcessParser::GetVmSize(string pid) {
+string ProcessParser::GetVmSize(const string &pid) {
   try {
     return to_string(stof(FetchValue(Path::basePath() + pid + Path::statusPath(), 1, "VmData")) / float(1024 * 1024));
-  }
-  catch (runtime_error &e) {
+  } catch (runtime_error &e) {
     throw e;
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     //Ignore the error
   }
   return "0.0";
@@ -157,11 +141,9 @@ string ProcessParser::GetVmSize(string pid) {
 int ProcessParser::GetTotalNumberOfProcesses() {
   try {
     return stoi(FetchValue(Path::basePath() + Path::statPath(), 1, "processes"));
-  }
-  catch (invalid_argument &e) {
+  } catch (invalid_argument &e) {
     return 0;
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     throw e;
   }
 }
@@ -169,11 +151,9 @@ int ProcessParser::GetTotalNumberOfProcesses() {
 int ProcessParser::GetNumberOfRunningProcesses() {
   try {
     return stoi(FetchValue(Path::basePath() + Path::statPath(), 1, "procs_running"));
-  }
-  catch (invalid_argument &e) {
+  } catch (invalid_argument &e) {
     return 0;
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     throw e;
   }
 }
@@ -181,15 +161,13 @@ int ProcessParser::GetNumberOfRunningProcesses() {
 string ProcessParser::GetOSName() {
   try {
     string line = FetchValue("/etc/os-release", 0, "PRETTY_NAME") + FetchValue("/etc/os-release", 1, "PRETTY_NAME");
-    size_t found = line.find("=") + 1;
+    size_t found = line.find('=') + 1;
     string result = line.substr(found);
     result.erase(remove(result.begin(), result.end(), '"'), result.end());
     return result;
-  }
-  catch (invalid_argument &e) {
-    return 0;
-  }
-  catch (exception &e) {
+  } catch (invalid_argument &e) {
+    return nullptr;
+  } catch (exception &e) {
     throw e;
   }
 }
@@ -201,31 +179,25 @@ int ProcessParser::GetTotalThreads() {
     //getting every process and reading their number of their threads
     try {
       result += stoi(FetchValue(Path::basePath() + pid + Path::statusPath(), 1, "Threads"));
-    }
-    catch (exception &e) {
+    } catch (exception &e) {
       continue;
     }
   }
   return result;
 }
 
-vector<string> ProcessParser::GetSysCpuPercent(string coreNumber) {
-  // It is possible to use this method for selection of data for overall cpu or every core.
-  // when nothing is passed "cpu" line is read
-  // when, for example "0" is passed  -> "cpu0" -> data for first core is read
+vector<string> ProcessParser::GetSysCpuPercent(const string &coreNumber) {
   try {
     return FetchValues(Path::basePath() + Path::statPath(), "cpu" + coreNumber);
-  }
-  catch (invalid_argument &e) {
+  } catch (invalid_argument &e) {
     return vector<string>{};
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     throw e;
   }
 }
 
-string ProcessParser::GetProcUser(string pid) {
-  string result = "";
+string ProcessParser::GetProcUser(const string &pid) {
+  string result;
   try {
     result = FetchValue(Path::basePath() + pid + Path::statusPath(), 1, "Uid");
 
@@ -235,25 +207,22 @@ string ProcessParser::GetProcUser(string pid) {
     // Searching for name of the user with selected UID
     while (getline(stream, line)) {
       if (line.find(name) != string::npos) {
-        result = line.substr(0, line.find(":"));
+        result = line.substr(0, line.find(':'));
         return result;
       }
     }
-  }
-  catch (runtime_error &e) {
+  } catch (runtime_error &e) {
     throw e;
-  }
-
-  catch (exception &e) {
+  } catch (exception &e) {
     //  Don't forward the exception
   }
   return "";
 }
 
-string ProcessParser::GetCpuPercent(string pid) {
+string ProcessParser::GetCpuPercent(const string &pid) {
   string line;
   string value;
-  float result;
+  float result = 0.f;
   try {
     ifstream stream = Util::getStream((Path::basePath() + pid + "/" + Path::statPath()));
     getline(stream, line);
@@ -272,11 +241,9 @@ string ProcessParser::GetCpuPercent(string pid) {
     float total_time = utime + stime + cutime + cstime;
     float seconds = uptime - (starttime / freq);
     result = 100.0 * ((total_time / freq) / seconds);
-  }
-  catch (runtime_error &e) {
+  } catch (runtime_error &e) {
     throw e;
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     //Ignore rest of the errors
   }
 
@@ -305,7 +272,6 @@ float ProcessParser::GetSysRamPercent() {
   string name3 = "Buffers:";
 
   string value;
-  int result;
   float total_mem = 0;
   float free_mem = 0;
   float buffers = 0;
@@ -333,20 +299,14 @@ float ProcessParser::GetSysRamPercent() {
         buffers = stof(values[1]);
       }
     }
-  }
-  catch (exception &e) {
+  } catch (exception &e) {
     //Don't propogate, ignore the error
   }
   //calculating usage:
   return float(100.0 * (1 - (free_mem / (total_mem - buffers))));
 }
 
-string ProcessParser::PrintCpuStats(vector<string> values1, vector<string> values2) {
-/*
-Because CPU stats can be calculated only if you take measures in two different time,
-this function has two parameters: two vectors of relevant values.
-We use a formula to calculate overall activity of processor.
-*/
+string ProcessParser::PrintCpuStats(const vector<string> &values1, const vector<string> &values2) {
   float activeTime = GetSysActiveCpuTime(values2) - GetSysActiveCpuTime(values1);
   float idleTime = GetSysIdleCpuTime(values2) - GetSysIdleCpuTime(values1);
   float totalTime = activeTime + idleTime;
@@ -354,7 +314,7 @@ We use a formula to calculate overall activity of processor.
   return to_string(result);
 }
 
-bool ProcessParser::IsPidExisting(string pid) {
+bool ProcessParser::IsPidExisting(const string &pid) {
   for (auto &exist_pid : GetPidList()) {
     if (exist_pid.compare(pid) == 0)
       return true;

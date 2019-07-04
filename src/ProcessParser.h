@@ -29,15 +29,15 @@ class ProcessParser {
  public:
   ProcessParser() = delete;
 
-  static string GetCmd(string pid);
+  static string GetCmd(const string &pid);
   static vector<string> GetPidList();
-  static string GetVmSize(string pid);
-  static string GetCpuPercent(string pid);
+  static string GetVmSize(const string &pid);
+  static string GetCpuPercent(const string &pid);
   static long int GetSysUpTime();
-  static string GetProcUpTime(string pid);
-  static string GetProcUser(string pid);
+  static string GetProcUpTime(const string &pid);
+  static string GetProcUser(const string &pid);
   static int GetNumberOfCores();
-  static vector<string> GetSysCpuPercent(string coreNumber = "");
+  static vector<string> GetSysCpuPercent(const string &coreNumber = "");
   static float GetSysActiveCpuTime(vector<string> values);
   static float GetSysIdleCpuTime(vector<string> values);
   static float GetSysRamPercent();
@@ -46,11 +46,11 @@ class ProcessParser {
   static int GetTotalNumberOfProcesses();
   static int GetNumberOfRunningProcesses();
   static string GetOSName();
-  static string PrintCpuStats(vector<string> values1, vector<string> values2);
-  static bool IsPidExisting(string pid);
+  static string PrintCpuStats(const vector<string> &values1, const vector<string> &values2);
+  static bool IsPidExisting(const string &pid);
 
  private:
   static string FetchValue(string &&path, int index);
-  static vector<string> FetchValues(string &&path, string searchString);
+  static vector<string> FetchValues(string &&path, const string &searchString);
   static string FetchValue(string &&path, int index, string searchString);
 };
