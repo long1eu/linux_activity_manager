@@ -4,7 +4,7 @@
 
 #include "SysInfo.h"
 
-void SysInfo::getOtherCores(int _size) {
+void SysInfo::GetOtherCores(int _size) {
 //when number of cores is detected, vectors are modified to fit incoming data
   cores_stats_ = vector<string>{};
   cores_stats_.resize(_size);
@@ -17,7 +17,7 @@ void SysInfo::getOtherCores(int _size) {
   }
 }
 
-void SysInfo::setLastCpuMeasures() {
+void SysInfo::SetLastCpuMeasures() {
   last_cpu_stats_ = ProcessParser::GetSysCpuPercent();
 }
 void SysInfo::setCpuCoresStats() {
@@ -32,7 +32,7 @@ void SysInfo::setCpuCoresStats() {
   last_cpu_cores_stats = current_cpu_cores_stats_;
 }
 
-void SysInfo::setAttributes() {
+void SysInfo::SetAttributes() {
   mem_percent_ = ProcessParser::GetSysRamPercent();
   up_time_ = ProcessParser::GetSysUpTime();
   total_proc_ = ProcessParser::GetTotalNumberOfProcesses();

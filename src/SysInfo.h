@@ -4,29 +4,24 @@
 #include <iostream>
 #include <vector>
 #include "ProcessParser.h"
+
 class SysInfo {
 
  public:
-
   SysInfo() {
-    /*
-    Getting initial info about system
-    Initial data for individual cores is set
-    System data is set
-    */
     try {
-      this->getOtherCores(ProcessParser::GetNumberOfCores());
-      this->setLastCpuMeasures();
-      this->setAttributes();
-      this->os_name_ = ProcessParser::GetOSName();
-      this->kernel_ver_ = ProcessParser::GetSysKernelVersion();
+      GetOtherCores(ProcessParser::GetNumberOfCores());
+      SetLastCpuMeasures();
+      SetAttributes();
+      os_name_ = ProcessParser::GetOSName();
+      kernel_ver_ = ProcessParser::GetSysKernelVersion();
     }
     catch (exception &e) {
       throw e;
     }
   }
-  void setAttributes();
-  void setLastCpuMeasures();
+  void SetAttributes();
+  void SetLastCpuMeasures();
   string getMemPercent() const;
   long getUpTime() const;
   string getThreads() const;
@@ -35,7 +30,7 @@ class SysInfo {
   string getKernelVersion() const;
   string getOSName() const;
   string getCpuPercent() const;
-  void getOtherCores(int _size);
+  void GetOtherCores(int _size);
   void setCpuCoresStats();
   vector<string> getCoresStats() const;
 

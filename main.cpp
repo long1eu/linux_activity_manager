@@ -14,7 +14,7 @@
 using namespace std;
 
 void writeSysInfoToConsole(SysInfo sys, WINDOW *sys_win) {
-  sys.setAttributes();
+  sys.SetAttributes();
 
   mvwprintw(sys_win, 2, 2, ("OS: " + sys.getOSName()).c_str());
   mvwprintw(sys_win, 3, 2, (("Kernel version: " + sys.getKernelVersion())).c_str());
