@@ -55,7 +55,7 @@ vector<string> SysInfo::GetCoresStats() const {
     if (!check || cores_stats_[i] == "nan") {
       return vector<string>();
     }
-    temp += Util::getProgressBar(cores_stats_[i]);
+    temp += Util::GetProgressBar(cores_stats_[i]);
     result.push_back(temp);
   }
   return move(result);

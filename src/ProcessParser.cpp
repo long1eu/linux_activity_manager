@@ -29,7 +29,7 @@ vector<string> ProcessParser::GetPidList() {
 string ProcessParser::GetCmd(const string &pid) {
   try {
     string line;
-    ifstream stream = Util::getStream((Path::basePath() + pid + Path::cmdPath()));
+    ifstream stream = Util::GetStream((Path::basePath() + pid + Path::cmdPath()));
     getline(stream, line);
     return line;
   } catch (runtime_error &e) {
@@ -42,7 +42,7 @@ string ProcessParser::GetCmd(const string &pid) {
 
 string ProcessParser::FetchValue(string &&path, int index) {
   try {
-    ifstream stream = Util::getStream(path);
+    ifstream stream = Util::GetStream(path);
     string line;
     getline(stream, line);
     istringstream buf(line);
@@ -57,7 +57,7 @@ string ProcessParser::FetchValue(string &&path, int index) {
 vector<string> ProcessParser::FetchValues(string &&path, const string &searchString) {
   try {
     string line;
-    ifstream stream = Util::getStream(path);
+    ifstream stream = Util::GetStream(path);
     while (getline(stream, line)) {
       if (line.compare(0, searchString.size(), searchString) == 0) {
         istringstream buf(line);
@@ -201,7 +201,7 @@ string ProcessParser::GetProcUser(const string &pid) {
   try {
     result = FetchValue(Path::basePath() + pid + Path::statusPath(), 1, "Uid");
 
-    ifstream stream = Util::getStream("/etc/passwd");
+    ifstream stream = Util::GetStream("/etc/passwd");
     string name = ("x:" + result);
     string line;
     // Searching for name of the user with selected UID
@@ -224,7 +224,7 @@ string ProcessParser::GetCpuPercent(const string &pid) {
   string value;
   float result = 0.f;
   try {
-    ifstream stream = Util::getStream((Path::basePath() + pid + "/" + Path::statPath()));
+    ifstream stream = Util::GetStream((Path::basePath() + pid + "/" + Path::statPath()));
     getline(stream, line);
     string str = line;
     istringstream buf(str);
@@ -276,7 +276,7 @@ float ProcessParser::GetSysRamPercent() {
   float free_mem = 0;
   float buffers = 0;
   try {
-    ifstream stream = Util::getStream((Path::basePath() + Path::memInfoPath()));
+    ifstream stream = Util::GetStream((Path::basePath() + Path::memInfoPath()));
     while (getline(stream, line)) {
       if (total_mem != 0 && free_mem != 0)
         break;

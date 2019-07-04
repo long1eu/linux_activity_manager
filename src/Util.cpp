@@ -4,7 +4,7 @@
 
 #include "Util.h"
 
-string Util::convertToTime(long int input_seconds) {
+string Util::ConvertToTime(long int input_seconds) {
   long minutes = input_seconds / 60;
   long hours = minutes / 60;
   long seconds = int(input_seconds % 60);
@@ -12,10 +12,8 @@ string Util::convertToTime(long int input_seconds) {
   string result = to_string(hours) + ":" + to_string(minutes) + ":" + to_string(seconds);
   return result;
 }
-// constructing string for given percentage
-// 50 bars is uniformly streched 0 - 100 %
-// meaning: every 2% is one bar(|)
-string Util::getProgressBar(string percent) {
+
+string Util::GetProgressBar(string percent) {
 
   string result = "0%% ";
   int _size = 50;
@@ -38,8 +36,7 @@ string Util::getProgressBar(string percent) {
   return result;
 }
 
-// wrapper for creating streams
-ifstream Util::getStream(string path) {
+ifstream Util::GetStream(string path) {
   ifstream stream{};
   stream.open(path, ifstream::in);
   if (!stream && !stream.is_open()) {
