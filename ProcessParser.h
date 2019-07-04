@@ -16,7 +16,6 @@
 #include <dirent.h>
 #include <time.h>
 #include <unistd.h>
-#include <optional>
 #include "constants.h"
 
 using namespace std;
