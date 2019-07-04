@@ -14,7 +14,7 @@
 using namespace std;
 
 #define USE_PROCESS_LIST_OPTIMIZATION
-//#define DEBUGMODE
+#define DEBUGMODE
 #ifdef DEBUGMODE
  void writeSysInfoToConsole(SysInfo sys){
     cout<< "OS: " << sys.getOSName()<<endl;
