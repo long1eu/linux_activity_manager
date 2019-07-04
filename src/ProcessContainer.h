@@ -11,7 +11,7 @@ class ProcessContainer {
   std::vector<Process> _list{};
  public:
   ProcessContainer() {
-    this->refreshList();
+    refreshList();
   }
   int refreshList();
   std::string printList();
