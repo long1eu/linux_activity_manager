@@ -6,16 +6,17 @@
 
 void SysInfo::getOtherCores(int _size) {
 //when number of cores is detected, vectors are modified to fit incoming data
-  this->coresStats = vector<string>{};
-  this->coresStats.resize(_size);
-  this->lastCpuCoresStats = vector<vector<string>>{};
-  this->lastCpuCoresStats.resize(_size);
-  this->currentCpuCoresStats = vector<vector<string>>{};
-  this->currentCpuCoresStats.resize(_size);
+  coresStats = vector<string>{};
+  coresStats.resize(_size);
+  lastCpuCoresStats = vector<vector<string>>{};
+  lastCpuCoresStats.resize(_size);
+  currentCpuCoresStats = vector<vector<string>>{};
+  currentCpuCoresStats.resize(_size);
   for (int i = 0; i < _size; i++) {
-    this->lastCpuCoresStats[i] = ProcessParser::GetSysCpuPercent(to_string(i));
+    lastCpuCoresStats[i] = ProcessParser::GetSysCpuPercent(to_string(i));
   }
 }
+
 void SysInfo::setLastCpuMeasures() {
   this->lastCpuStats = ProcessParser::GetSysCpuPercent();
 }
@@ -59,27 +60,12 @@ vector<string> SysInfo::getCoresStats() const {
   }
   return move(result);
 }
-string SysInfo::getCpuPercent() const {
-  return this->cpuPercent;
-}
-string SysInfo::getMemPercent() const {
-  return to_string(this->memPercent);
-}
-long SysInfo::getUpTime() const {
-  return this->upTime;
-}
-string SysInfo::getKernelVersion() const {
-  return this->kernelVer;
-}
-string SysInfo::getTotalProc() const {
-  return to_string(this->totalProc);
-}
-string SysInfo::getRunningProc() const {
-  return to_string(this->runningProc);
-}
-string SysInfo::getThreads() const {
-  return to_string(this->threads);
-}
-string SysInfo::getOSName() const {
-  return this->OSname;
-}
+
+string SysInfo::getCpuPercent() const { return this->cpuPercent; }
+string SysInfo::getMemPercent() const { return to_string(this->memPercent); }
+long SysInfo::getUpTime() const { return this->upTime; }
+string SysInfo::getKernelVersion() const { return this->kernelVer; }
+string SysInfo::getTotalProc() const { return to_string(this->totalProc); }
+string SysInfo::getRunningProc() const { return to_string(this->runningProc); }
+string SysInfo::getThreads() const { return to_string(this->threads); }
+string SysInfo::getOSName() const { return this->OSname; }
