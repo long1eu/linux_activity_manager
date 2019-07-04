@@ -20,19 +20,21 @@ class SysInfo {
       throw e;
     }
   }
+
   void SetAttributes();
   void SetLastCpuMeasures();
-  string getMemPercent() const;
-  long getUpTime() const;
-  string getThreads() const;
-  string getTotalProc() const;
-  string getRunningProc() const;
-  string getKernelVersion() const;
-  string getOSName() const;
-  string getCpuPercent() const;
   void GetOtherCores(int _size);
   void setCpuCoresStats();
-  vector<string> getCoresStats() const;
+  vector<string> GetCoresStats() const;
+
+  string mem_percent() const;
+  long up_time() const;
+  string threads() const;
+  string total_proc() const;
+  string running_proc() const;
+  string kernel_ver() const;
+  string os_name() const;
+  string cpu_percent() const;
 
  private:
   vector<string> last_cpu_stats_;

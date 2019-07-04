@@ -16,15 +16,15 @@ using namespace std;
 void writeSysInfoToConsole(SysInfo sys, WINDOW *sys_win) {
   sys.SetAttributes();
 
-  mvwprintw(sys_win, 2, 2, ("OS: " + sys.getOSName()).c_str());
-  mvwprintw(sys_win, 3, 2, (("Kernel version: " + sys.getKernelVersion())).c_str());
+  mvwprintw(sys_win, 2, 2, ("OS: " + sys.os_name()).c_str());
+  mvwprintw(sys_win, 3, 2, (("Kernel version: " + sys.kernel_ver())).c_str());
   mvwprintw(sys_win, 4, 2, "CPU: ");
   wattron(sys_win, COLOR_PAIR(1));
-  wprintw(sys_win, (Util::getProgressBar(sys.getCpuPercent())).c_str());
+  wprintw(sys_win, (Util::getProgressBar(sys.cpu_percent())).c_str());
   wattroff(sys_win, COLOR_PAIR(1));
   mvwprintw(sys_win, 5, 2, "Other cores:");
   wattron(sys_win, COLOR_PAIR(1));
-  vector<string> val = sys.getCoresStats();
+  vector<string> val = sys.GetCoresStats();
   for (int i = 0; i < val.size(); i++) {
     mvwprintw(sys_win, (6 + i), 2, val[i].c_str());
   }
@@ -32,11 +32,11 @@ void writeSysInfoToConsole(SysInfo sys, WINDOW *sys_win) {
   wattroff(sys_win, COLOR_PAIR(1));
   mvwprintw(sys_win, 10, 2, "Memory: ");
   wattron(sys_win, COLOR_PAIR(1));
-  wprintw(sys_win, Util::getProgressBar(sys.getMemPercent()).c_str());
+  wprintw(sys_win, Util::getProgressBar(sys.mem_percent()).c_str());
   wattroff(sys_win, COLOR_PAIR(1));
-  mvwprintw(sys_win, 11, 2, ("Total Processes:" + sys.getTotalProc()).c_str());
-  mvwprintw(sys_win, 12, 2, ("Running Processes:" + sys.getRunningProc()).c_str());
-  mvwprintw(sys_win, 13, 2, ("Up Time: " + Util::convertToTime(sys.getUpTime())).c_str());
+  mvwprintw(sys_win, 11, 2, ("Total Processes:" + sys.total_proc()).c_str());
+  mvwprintw(sys_win, 12, 2, ("Running Processes:" + sys.running_proc()).c_str());
+  mvwprintw(sys_win, 13, 2, ("Up Time: " + Util::convertToTime(sys.up_time())).c_str());
   wrefresh(sys_win);
 }
 

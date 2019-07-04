@@ -45,7 +45,7 @@ void SysInfo::SetAttributes() {
 }
 
 // Constructing string for every core data display
-vector<string> SysInfo::getCoresStats() const {
+vector<string> SysInfo::GetCoresStats() const {
   vector<string> result = vector<string>{};
   for (int i = 0; i < cores_stats_.size(); i++) {
     string temp = ("cpu" + to_string(i) + ": ");
@@ -61,11 +61,11 @@ vector<string> SysInfo::getCoresStats() const {
   return move(result);
 }
 
-string SysInfo::getCpuPercent() const { return cpu_percent_; }
-string SysInfo::getMemPercent() const { return to_string(mem_percent_); }
-long SysInfo::getUpTime() const { return up_time_; }
-string SysInfo::getKernelVersion() const { return kernel_ver_; }
-string SysInfo::getTotalProc() const { return to_string(total_proc_); }
-string SysInfo::getRunningProc() const { return to_string(running_proc_); }
-string SysInfo::getThreads() const { return to_string(threads_); }
-string SysInfo::getOSName() const { return os_name_; }
+string SysInfo::cpu_percent() const { return cpu_percent_; }
+string SysInfo::mem_percent() const { return to_string(mem_percent_); }
+long SysInfo::up_time() const { return up_time_; }
+string SysInfo::kernel_ver() const { return kernel_ver_; }
+string SysInfo::total_proc() const { return to_string(total_proc_); }
+string SysInfo::running_proc() const { return to_string(running_proc_); }
+string SysInfo::threads() const { return to_string(threads_); }
+string SysInfo::os_name() const { return os_name_; }
