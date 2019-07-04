@@ -336,17 +336,17 @@ std::string ProcessParser::getCpuPercent(const string pid){
 
 float ProcessParser::getSysActiveCpuTime(vector<string> values){
    return (stof(values[S_USER]) +
-            stof(values[S_NICE]) +
-            stof(values[S_SYSTEM]) +
-            stof(values[S_IRQ]) +
-            stof(values[S_SOFTIRQ]) +
-            stof(values[S_STEAL]) +
-            stof(values[S_GUEST]) +
-            stof(values[S_GUEST_NICE]));
+       stof(values[kNice]) +
+       stof(values[kSystem]) +
+       stof(values[kIrq]) +
+       stof(values[kSoftIrq]) +
+       stof(values[kSteal]) +
+       stof(values[kGuest]) +
+       stof(values[kGuestNice]));
 }
 
 float ProcessParser::getSysIdleCpuTime(vector<string> values){
-    return (stof(values[S_IDLE]) + stof(values[S_IOWAIT]));
+  return (stof(values[kIdle]) + stof(values[kIoWait]));
 }
 
 float ProcessParser::getSysRamPercent(){
