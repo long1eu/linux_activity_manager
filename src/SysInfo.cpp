@@ -61,11 +61,11 @@ vector<string> SysInfo::getCoresStats() const {
   return move(result);
 }
 
-string SysInfo::getCpuPercent() const { return this->cpuPercent; }
-string SysInfo::getMemPercent() const { return to_string(this->memPercent); }
-long SysInfo::getUpTime() const { return this->upTime; }
-string SysInfo::getKernelVersion() const { return this->kernelVer; }
-string SysInfo::getTotalProc() const { return to_string(this->totalProc); }
-string SysInfo::getRunningProc() const { return to_string(this->runningProc); }
-string SysInfo::getThreads() const { return to_string(this->threads); }
-string SysInfo::getOSName() const { return this->OSname; }
+string SysInfo::getCpuPercent() const { return cpuPercent; }
+string SysInfo::getMemPercent() const { return to_string(memPercent); }
+long SysInfo::getUpTime() const { return upTime; }
+string SysInfo::getKernelVersion() const { return kernelVer; }
+string SysInfo::getTotalProc() const { return to_string(totalProc); }
+string SysInfo::getRunningProc() const { return to_string(runningProc); }
+string SysInfo::getThreads() const { return to_string(threads); }
+string SysInfo::getOSName() const { return OSname; }
