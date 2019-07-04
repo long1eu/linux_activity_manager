@@ -31,19 +31,19 @@ void SysInfo::setCpuCoresStats() {
   }
   lastCpuCoresStats = currentCpuCoresStats;
 }
-void SysInfo::setAttributes() {
-// getting parsed data
-  this->memPercent = ProcessParser::GetSysRamPercent();
-  this->upTime = ProcessParser::GetSysUpTime();
-  this->totalProc = ProcessParser::GetTotalNumberOfProcesses();
-  this->runningProc = ProcessParser::GetNumberOfRunningProcesses();
-  this->threads = ProcessParser::GetTotalThreads();
-  this->currentCpuStats = ProcessParser::GetSysCpuPercent();
-  this->cpuPercent = ProcessParser::PrintCpuStats(this->lastCpuStats, this->currentCpuStats);
-  this->lastCpuStats = this->currentCpuStats;
-  this->setCpuCoresStats();
 
+void SysInfo::setAttributes() {
+  memPercent = ProcessParser::GetSysRamPercent();
+  upTime = ProcessParser::GetSysUpTime();
+  totalProc = ProcessParser::GetTotalNumberOfProcesses();
+  runningProc = ProcessParser::GetNumberOfRunningProcesses();
+  threads = ProcessParser::GetTotalThreads();
+  currentCpuStats = ProcessParser::GetSysCpuPercent();
+  cpuPercent = ProcessParser::PrintCpuStats(lastCpuStats, currentCpuStats);
+  lastCpuStats = currentCpuStats;
+  setCpuCoresStats();
 }
+
 // Constructing string for every core data display
 vector<string> SysInfo::getCoresStats() const {
   vector<string> result = vector<string>{};
