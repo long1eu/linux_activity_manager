@@ -47,15 +47,15 @@ void SysInfo::setAttributes() {
 // Constructing string for every core data display
 vector<string> SysInfo::getCoresStats() const {
   vector<string> result = vector<string>{};
-  for (int i = 0; i < this->coresStats.size(); i++) {
+  for (int i = 0; i < coresStats.size(); i++) {
     string temp = ("cpu" + to_string(i) + ": ");
     float check;
-    if (!this->coresStats[i].empty())
-      check = stof(this->coresStats[i]);
-    if (!check || this->coresStats[i] == "nan") {
+    if (!coresStats[i].empty())
+      check = stof(coresStats[i]);
+    if (!check || coresStats[i] == "nan") {
       return vector<string>();
     }
-    temp += Util::getProgressBar(this->coresStats[i]);
+    temp += Util::getProgressBar(coresStats[i]);
     result.push_back(temp);
   }
   return move(result);
