@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include "ProcessParser.h"
 
 using namespace std;
