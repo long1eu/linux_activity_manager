@@ -2,7 +2,7 @@
 // Created by Razvan Lung on 2019-07-04.
 //
 
-#import "ProcessParser.h"
+#include "ProcessParser.h"
 
 vector<string> ProcessParser::getPidList() {
   DIR *dir;

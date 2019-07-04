@@ -2,7 +2,7 @@
 // Created by Razvan Lung on 2019-07-04.
 //
 
-#import "SysInfo.h"
+#include "SysInfo.h"
 
 void SysInfo::getOtherCores(int _size) {
 //when number of cores is detected, vectors are modified to fit incoming data
