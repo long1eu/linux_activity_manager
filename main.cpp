@@ -74,8 +74,8 @@ void printMain(SysInfo sys, ProcessContainer procs) {
     box(proc_win, 0, 0);
     writeSysInfoToConsole(sys, sys_win);
 
-    procs.refreshList();
-    vector<vector<string>> processes = procs.getList();
+    procs.RefreshList();
+    vector<vector<string>> processes = procs.GetList();
     getProcessListToConsole(processes[counter], proc_win);
 
     wrefresh(sys_win);

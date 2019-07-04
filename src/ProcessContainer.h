@@ -3,20 +3,21 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 #include "Process.h"
 
 class ProcessContainer {
 
  public:
   ProcessContainer() {
-    refreshList();
+    RefreshList();
   }
 
-  int refreshList();
-  string printList();
-  vector<vector<string>> getList();
-  vector<string> getList(int pageNumber);
+  int RefreshList();
+  string PrintList();
+  vector<vector<string>> GetList();
+  vector<string> GetList(int page_number);
 
  private:
-  vector<Process> _list{};
+  vector<Process> list_{};
 };
