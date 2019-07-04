@@ -27,7 +27,7 @@ vector<string> ProcessParser::GetPidList() {
   return container;
 }
 
-string ProcessParser::getCmd(const string pid) {
+string ProcessParser::GetCmd(string pid) {
   try {
     string line;
     ifstream stream = Util::getStream((Path::basePath() + pid + Path::cmdPath()));
@@ -43,7 +43,7 @@ string ProcessParser::getCmd(const string pid) {
   return string(70, ' ');
 }
 
-string ProcessParser::fetchValue(string &&path, int index) {
+string ProcessParser::FetchValue(string &&path, int index) {
   try {
     ifstream stream = Util::getStream(path);
     string line;
@@ -58,7 +58,7 @@ string ProcessParser::fetchValue(string &&path, int index) {
   }
 }
 
-vector<string> ProcessParser::fetchValues(string &&path, string searchString) {
+vector<string> ProcessParser::FetchValues(string &&path, string searchString) {
   try {
     string line;
     ifstream stream = Util::getStream(path);
@@ -77,10 +77,10 @@ vector<string> ProcessParser::fetchValues(string &&path, string searchString) {
   throw invalid_argument("Failed to find the search string.");
 }
 
-string ProcessParser::fetchValue(string &&path, int index, string searchString) {
+string ProcessParser::FetchValue(string &&path, int index, string searchString) {
   try {
     //TODO: Check if the index is in bounds
-    return fetchValues(move(path), searchString)[index];
+    return FetchValues(move(path), searchString)[index];
   }
   catch (exception &e) {
     throw e;
@@ -88,9 +88,9 @@ string ProcessParser::fetchValue(string &&path, int index, string searchString) 
   return "";
 }
 
-long int ProcessParser::getSysUpTime() {
+long int ProcessParser::GetSysUpTime() {
   try {
-    return stoi(fetchValue(Path::basePath() + Path::upTimePath(), 0));
+    return stoi(FetchValue(Path::basePath() + Path::upTimePath(), 0));
   }
   catch (invalid_argument &e) {
     //Ignore this exception
@@ -101,10 +101,10 @@ long int ProcessParser::getSysUpTime() {
   return 0;
 }
 
-string ProcessParser::getProcUpTime(const string pid) {
+string ProcessParser::GetProcUpTime(string pid) {
   try {
     return to_string(float(
-        stof(fetchValue(Path::basePath() + pid + "/" + Path::statPath(), 13)) / sysconf(_SC_CLK_TCK)));
+        stof(FetchValue(Path::basePath() + pid + "/" + Path::statPath(), 13)) / sysconf(_SC_CLK_TCK)));
   }
   catch (runtime_error &e) {
     throw e;
@@ -115,10 +115,10 @@ string ProcessParser::getProcUpTime(const string pid) {
   return "";
 }
 
-int ProcessParser::getNumberOfCores() {
+int ProcessParser::GetNumberOfCores() {
   // Get the number of host cpu cores
   try {
-    string result = fetchValue(Path::basePath() + "cpuinfo", 3, "cpu cores");
+    string result = FetchValue(Path::basePath() + "cpuinfo", 3, "cpu cores");
     if (result.size() != 0) {
       return stoi(result);
     }
@@ -132,18 +132,18 @@ int ProcessParser::getNumberOfCores() {
   return 0;
 }
 
-string ProcessParser::getSysKernelVersion() {
+string ProcessParser::GetSysKernelVersion() {
   try {
-    return fetchValue(Path::basePath() + Path::versionPath(), 2, "Linux version ");
+    return FetchValue(Path::basePath() + Path::versionPath(), 2, "Linux version ");
   }
   catch (exception &e) {
     throw e;
   }
 }
 
-string ProcessParser::getVmSize(const string pid) {
+string ProcessParser::GetVmSize(string pid) {
   try {
-    return to_string(stof(fetchValue(Path::basePath() + pid + Path::statusPath(), 1, "VmData")) / float(1024 * 1024));
+    return to_string(stof(FetchValue(Path::basePath() + pid + Path::statusPath(), 1, "VmData")) / float(1024 * 1024));
   }
   catch (runtime_error &e) {
     throw e;
@@ -154,9 +154,9 @@ string ProcessParser::getVmSize(const string pid) {
   return "0.0";
 }
 
-int ProcessParser::getTotalNumberOfProcesses() {
+int ProcessParser::GetTotalNumberOfProcesses() {
   try {
-    return stoi(fetchValue(Path::basePath() + Path::statPath(), 1, "processes"));
+    return stoi(FetchValue(Path::basePath() + Path::statPath(), 1, "processes"));
   }
   catch (invalid_argument &e) {
     return 0;
@@ -166,9 +166,9 @@ int ProcessParser::getTotalNumberOfProcesses() {
   }
 }
 
-int ProcessParser::getNumberOfRunningProcesses() {
+int ProcessParser::GetNumberOfRunningProcesses() {
   try {
-    return stoi(fetchValue(Path::basePath() + Path::statPath(), 1, "procs_running"));
+    return stoi(FetchValue(Path::basePath() + Path::statPath(), 1, "procs_running"));
   }
   catch (invalid_argument &e) {
     return 0;
@@ -178,9 +178,9 @@ int ProcessParser::getNumberOfRunningProcesses() {
   }
 }
 
-string ProcessParser::getOSName() {
+string ProcessParser::GetOSName() {
   try {
-    string line = fetchValue("/etc/os-release", 0, "PRETTY_NAME") + fetchValue("/etc/os-release", 1, "PRETTY_NAME");
+    string line = FetchValue("/etc/os-release", 0, "PRETTY_NAME") + FetchValue("/etc/os-release", 1, "PRETTY_NAME");
     size_t found = line.find("=") + 1;
     string result = line.substr(found);
     result.erase(remove(result.begin(), result.end(), '"'), result.end());
@@ -194,13 +194,13 @@ string ProcessParser::getOSName() {
   }
 }
 
-int ProcessParser::getTotalThreads() {
+int ProcessParser::GetTotalThreads() {
   int result = 0;
   vector<string> _list = ProcessParser::GetPidList();
   for (const auto &pid:_list) {
     //getting every process and reading their number of their threads
     try {
-      result += stoi(fetchValue(Path::basePath() + pid + Path::statusPath(), 1, "Threads"));
+      result += stoi(FetchValue(Path::basePath() + pid + Path::statusPath(), 1, "Threads"));
     }
     catch (exception &e) {
       continue;
@@ -209,12 +209,12 @@ int ProcessParser::getTotalThreads() {
   return result;
 }
 
-vector<string> ProcessParser::getSysCpuPercent(string coreNumber) {
+vector<string> ProcessParser::GetSysCpuPercent(string coreNumber) {
   // It is possible to use this method for selection of data for overall cpu or every core.
   // when nothing is passed "cpu" line is read
   // when, for example "0" is passed  -> "cpu0" -> data for first core is read
   try {
-    return fetchValues(Path::basePath() + Path::statPath(), "cpu" + coreNumber);
+    return FetchValues(Path::basePath() + Path::statPath(), "cpu" + coreNumber);
   }
   catch (invalid_argument &e) {
     return vector<string>{};
@@ -224,10 +224,10 @@ vector<string> ProcessParser::getSysCpuPercent(string coreNumber) {
   }
 }
 
-string ProcessParser::getProcUser(const string pid) {
+string ProcessParser::GetProcUser(string pid) {
   string result = "";
   try {
-    result = fetchValue(Path::basePath() + pid + Path::statusPath(), 1, "Uid");
+    result = FetchValue(Path::basePath() + pid + Path::statusPath(), 1, "Uid");
 
     ifstream stream = Util::getStream("/etc/passwd");
     string name = ("x:" + result);
@@ -250,7 +250,7 @@ string ProcessParser::getProcUser(const string pid) {
   return "";
 }
 
-string ProcessParser::getCpuPercent(const string pid) {
+string ProcessParser::GetCpuPercent(string pid) {
   string line;
   string value;
   float result;
@@ -262,12 +262,12 @@ string ProcessParser::getCpuPercent(const string pid) {
     istream_iterator<string> beg(buf), end;
     vector<string> values(beg, end); // done!
     // acquiring relevant times for calculation of active occupation of CPU for selected process
-    float utime = stof(ProcessParser::getProcUpTime(pid));
+    float utime = stof(ProcessParser::GetProcUpTime(pid));
     float stime = stof(values[14]);
     float cutime = stof(values[15]);
     float cstime = stof(values[16]);
     float starttime = stof(values[21]);
-    float uptime = ProcessParser::getSysUpTime();
+    float uptime = ProcessParser::GetSysUpTime();
     float freq = sysconf(_SC_CLK_TCK);
     float total_time = utime + stime + cutime + cstime;
     float seconds = uptime - (starttime / freq);
@@ -283,7 +283,7 @@ string ProcessParser::getCpuPercent(const string pid) {
   return to_string(result);
 }
 
-float ProcessParser::getSysActiveCpuTime(vector<string> values) {
+float ProcessParser::GetSysActiveCpuTime(vector<string> values) {
   return (stof(values[kUser]) +
       stof(values[kNice]) +
       stof(values[kSystem]) +
@@ -294,11 +294,11 @@ float ProcessParser::getSysActiveCpuTime(vector<string> values) {
       stof(values[kGuestNice]));
 }
 
-float ProcessParser::getSysIdleCpuTime(vector<string> values) {
+float ProcessParser::GetSysIdleCpuTime(vector<string> values) {
   return (stof(values[kIdle]) + stof(values[kIoWait]));
 }
 
-float ProcessParser::getSysRamPercent() {
+float ProcessParser::GetSysRamPercent() {
   string line;
   string name1 = "MemAvailable:";
   string name2 = "MemFree:";
@@ -347,14 +347,14 @@ Because CPU stats can be calculated only if you take measures in two different t
 this function has two parameters: two vectors of relevant values.
 We use a formula to calculate overall activity of processor.
 */
-  float activeTime = getSysActiveCpuTime(values2) - getSysActiveCpuTime(values1);
-  float idleTime = getSysIdleCpuTime(values2) - getSysIdleCpuTime(values1);
+  float activeTime = GetSysActiveCpuTime(values2) - GetSysActiveCpuTime(values1);
+  float idleTime = GetSysIdleCpuTime(values2) - GetSysIdleCpuTime(values1);
   float totalTime = activeTime + idleTime;
   float result = 100.0 * (activeTime / totalTime);
   return to_string(result);
 }
 
-bool ProcessParser::isPidExisting(const string pid) {
+bool ProcessParser::IsPidExisting(string pid) {
   for (auto &exist_pid : GetPidList()) {
     if (exist_pid.compare(pid) == 0)
       return true;

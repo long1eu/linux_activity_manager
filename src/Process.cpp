@@ -9,13 +9,13 @@ int Process::mem() const { return stoi(mem_); }
 string Process::up_time() const { return up_time_; }
 
 string Process::process() {
-  if (!ProcessParser::isPidExisting(pid_))
+  if (!ProcessParser::IsPidExisting(pid_))
     return "";
 
   stringstream result;
-  mem_ = ProcessParser::getVmSize(pid_);
-  up_time_ = ProcessParser::getProcUpTime(pid_);
-  cpu_ = ProcessParser::getCpuPercent(pid_);
+  mem_ = ProcessParser::GetVmSize(pid_);
+  up_time_ = ProcessParser::GetProcUpTime(pid_);
+  cpu_ = ProcessParser::GetCpuPercent(pid_);
 
   result << pid_ << "   " <<
          user_ << "   " <<

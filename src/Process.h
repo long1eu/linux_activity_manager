@@ -12,14 +12,14 @@ class Process {
   Process(const string &pid) {
     pid_ = pid;
     try {
-      user_ = ProcessParser::getProcUser(pid);
-      mem_ = ProcessParser::getVmSize(pid);
-      cmd_ = ProcessParser::getCmd(pid);
+      user_ = ProcessParser::GetProcUser(pid);
+      mem_ = ProcessParser::GetVmSize(pid);
+      cmd_ = ProcessParser::GetCmd(pid);
       if (cmd_.empty()) {
         cmd_ = string(70, ' ');
       }
-      up_time_ = ProcessParser::getProcUpTime(pid);
-      cpu_ = ProcessParser::getCpuPercent(pid);
+      up_time_ = ProcessParser::GetProcUpTime(pid);
+      cpu_ = ProcessParser::GetCpuPercent(pid);
     }
     catch (exception &e) {
       throw e;

@@ -25,35 +25,32 @@
 using namespace std;
 
 class ProcessParser {
- private:
-  static string fetchValue(string &&path, int index);
-  static vector<string> fetchValues(string &&path, string searchString);
-  static string fetchValue(string &&path, int index, string searchString);
 
  public:
   ProcessParser() = delete;
-  ProcessParser(ProcessParser &) = delete;
-  ProcessParser(ProcessParser &&) = delete;
-  ~ProcessParser() = delete;
 
-  static string getCmd(const string pid);
+  static string GetCmd(string pid);
   static vector<string> GetPidList();
-  static string getVmSize(const string pid);
-  static string getCpuPercent(const string pid);
-  static long int getSysUpTime();
-  static string getProcUpTime(const string pid);
-  static string getProcUser(const string pid);
-  static int getNumberOfCores();
-  static vector<string> getSysCpuPercent(string coreNumber = "");
-  static float getSysActiveCpuTime(vector<string> values);
-  static float getSysIdleCpuTime(vector<string> values);
-  static float getSysRamPercent();
-  static string getSysKernelVersion();
-  static int getTotalThreads();
-  static int getTotalNumberOfProcesses();
-  static int getNumberOfRunningProcesses();
-  static string getOSName();
+  static string GetVmSize(string pid);
+  static string GetCpuPercent(string pid);
+  static long int GetSysUpTime();
+  static string GetProcUpTime(string pid);
+  static string GetProcUser(string pid);
+  static int GetNumberOfCores();
+  static vector<string> GetSysCpuPercent(string coreNumber = "");
+  static float GetSysActiveCpuTime(vector<string> values);
+  static float GetSysIdleCpuTime(vector<string> values);
+  static float GetSysRamPercent();
+  static string GetSysKernelVersion();
+  static int GetTotalThreads();
+  static int GetTotalNumberOfProcesses();
+  static int GetNumberOfRunningProcesses();
+  static string GetOSName();
   static string PrintCpuStats(vector<string> values1, vector<string> values2);
-  static bool isPidExisting(const string pid);
+  static bool IsPidExisting(string pid);
 
+ private:
+  static string FetchValue(string &&path, int index);
+  static vector<string> FetchValues(string &&path, string searchString);
+  static string FetchValue(string &&path, int index, string searchString);
 };

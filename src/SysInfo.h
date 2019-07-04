@@ -29,11 +29,11 @@ class SysInfo {
     System data is set
     */
     try {
-      this->getOtherCores(ProcessParser::getNumberOfCores());
+      this->getOtherCores(ProcessParser::GetNumberOfCores());
       this->setLastCpuMeasures();
       this->setAttributes();
-      this->OSname = ProcessParser::getOSName();
-      this->kernelVer = ProcessParser::getSysKernelVersion();
+      this->OSname = ProcessParser::GetOSName();
+      this->kernelVer = ProcessParser::GetSysKernelVersion();
     }
     catch (exception &e) {
       throw e;

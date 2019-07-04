@@ -13,16 +13,16 @@ void SysInfo::getOtherCores(int _size) {
   this->currentCpuCoresStats = vector<vector<string>>{};
   this->currentCpuCoresStats.resize(_size);
   for (int i = 0; i < _size; i++) {
-    this->lastCpuCoresStats[i] = ProcessParser::getSysCpuPercent(to_string(i));
+    this->lastCpuCoresStats[i] = ProcessParser::GetSysCpuPercent(to_string(i));
   }
 }
 void SysInfo::setLastCpuMeasures() {
-  this->lastCpuStats = ProcessParser::getSysCpuPercent();
+  this->lastCpuStats = ProcessParser::GetSysCpuPercent();
 }
 void SysInfo::setCpuCoresStats() {
 // Getting data from files (previous data is required)
   for (int i = 0; i < this->currentCpuCoresStats.size(); i++) {
-    this->currentCpuCoresStats[i] = ProcessParser::getSysCpuPercent(to_string(i));
+    this->currentCpuCoresStats[i] = ProcessParser::GetSysCpuPercent(to_string(i));
   }
   for (int i = 0; i < this->currentCpuCoresStats.size(); i++) {
     // after acquirement of data we are calculating every core percentage of usage
@@ -32,12 +32,12 @@ void SysInfo::setCpuCoresStats() {
 }
 void SysInfo::setAttributes() {
 // getting parsed data
-  this->memPercent = ProcessParser::getSysRamPercent();
-  this->upTime = ProcessParser::getSysUpTime();
-  this->totalProc = ProcessParser::getTotalNumberOfProcesses();
-  this->runningProc = ProcessParser::getNumberOfRunningProcesses();
-  this->threads = ProcessParser::getTotalThreads();
-  this->currentCpuStats = ProcessParser::getSysCpuPercent();
+  this->memPercent = ProcessParser::GetSysRamPercent();
+  this->upTime = ProcessParser::GetSysUpTime();
+  this->totalProc = ProcessParser::GetTotalNumberOfProcesses();
+  this->runningProc = ProcessParser::GetNumberOfRunningProcesses();
+  this->threads = ProcessParser::GetTotalThreads();
+  this->currentCpuStats = ProcessParser::GetSysCpuPercent();
   this->cpuPercent = ProcessParser::PrintCpuStats(this->lastCpuStats, this->currentCpuStats);
   this->lastCpuStats = this->currentCpuStats;
   this->setCpuCoresStats();
