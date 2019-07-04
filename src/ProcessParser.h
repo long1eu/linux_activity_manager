@@ -335,7 +335,7 @@ std::string ProcessParser::getCpuPercent(const string pid){
 }
 
 float ProcessParser::getSysActiveCpuTime(vector<string> values){
-   return (stof(values[S_USER]) +
+  return (stof(values[kUser]) +
        stof(values[kNice]) +
        stof(values[kSystem]) +
        stof(values[kIrq]) +
