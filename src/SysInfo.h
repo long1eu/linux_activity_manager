@@ -6,15 +6,15 @@
 #include "ProcessParser.h"
 class SysInfo {
  private:
-  std::vector<std::string> lastCpuStats;
-  std::vector<std::string> currentCpuStats;
-  std::vector<std::string> coresStats;
-  std::vector<std::vector<std::string>> lastCpuCoresStats;
-  std::vector<std::vector<std::string>> currentCpuCoresStats;
-  std::string cpuPercent;
+  vector<string> lastCpuStats;
+  vector<string> currentCpuStats;
+  vector<string> coresStats;
+  vector<vector<string>> lastCpuCoresStats;
+  vector<vector<string>> currentCpuCoresStats;
+  string cpuPercent;
   float memPercent;
-  std::string OSname;
-  std::string kernelVer;
+  string OSname;
+  string kernelVer;
   long upTime;
   int totalProc;
   int runningProc;
@@ -41,16 +41,16 @@ class SysInfo {
   }
   void setAttributes();
   void setLastCpuMeasures();
-  std::string getMemPercent() const;
+  string getMemPercent() const;
   long getUpTime() const;
-  std::string getThreads() const;
-  std::string getTotalProc() const;
-  std::string getRunningProc() const;
-  std::string getKernelVersion() const;
-  std::string getOSName() const;
-  std::string getCpuPercent() const;
+  string getThreads() const;
+  string getTotalProc() const;
+  string getRunningProc() const;
+  string getKernelVersion() const;
+  string getOSName() const;
+  string getCpuPercent() const;
   void getOtherCores(int _size);
   void setCpuCoresStats();
-  std::vector<std::string> getCoresStats() const;
+  vector<string> getCoresStats() const;
 
 };

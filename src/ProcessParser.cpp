@@ -10,20 +10,20 @@ vector<string> ProcessParser::getPidList() {
   // If we get valid check we store dir names in vector as list of machine pids
   vector<string> container;
   if (!(dir = opendir("/proc")))
-    throw std::runtime_error(std::strerror(errno));
+    throw runtime_error(strerror(errno));
 
   while (dirent *dirp = readdir(dir)) {
     // is this a directory?
     if (dirp->d_type != DT_DIR)
       continue;
     // Is every character of the name a digit?
-    if (all_of(dirp->d_name, dirp->d_name + std::strlen(dirp->d_name), [](char c) { return std::isdigit(c); })) {
+    if (all_of(dirp->d_name, dirp->d_name + strlen(dirp->d_name), [](char c) { return isdigit(c); })) {
       container.push_back(dirp->d_name);
     }
   }
   //Validating process of directory closing
   if (closedir(dir))
-    throw std::runtime_error(std::strerror(errno));
+    throw runtime_error(strerror(errno));
   return container;
 }
 
@@ -31,10 +31,10 @@ string ProcessParser::getCmd(const string pid) {
   try {
     string line;
     ifstream stream = Util::getStream((Path::basePath() + pid + Path::cmdPath()));
-    std::getline(stream, line);
+    getline(stream, line);
     return line;
   }
-  catch (std::runtime_error &e) {
+  catch (runtime_error &e) {
     throw e;
   }
   catch (exception &e) {
@@ -62,7 +62,7 @@ vector<string> ProcessParser::fetchValues(string &&path, string searchString) {
   try {
     string line;
     ifstream stream = Util::getStream(path);
-    while (std::getline(stream, line)) {
+    while (getline(stream, line)) {
       if (line.compare(0, searchString.size(), searchString) == 0) {
         istringstream buf(line);
         istream_iterator<string> beg(buf), end;
@@ -74,13 +74,13 @@ vector<string> ProcessParser::fetchValues(string &&path, string searchString) {
   catch (exception &e) {
     throw e;
   }
-  throw std::invalid_argument("Failed to find the search string.");
+  throw invalid_argument("Failed to find the search string.");
 }
 
 string ProcessParser::fetchValue(string &&path, int index, string searchString) {
   try {
     //TODO: Check if the index is in bounds
-    return fetchValues(std::move(path), searchString)[index];
+    return fetchValues(move(path), searchString)[index];
   }
   catch (exception &e) {
     throw e;
@@ -92,7 +92,7 @@ long int ProcessParser::getSysUpTime() {
   try {
     return stoi(fetchValue(Path::basePath() + Path::upTimePath(), 0));
   }
-  catch (std::invalid_argument &e) {
+  catch (invalid_argument &e) {
     //Ignore this exception
   }
   catch (exception &e) {
@@ -101,12 +101,12 @@ long int ProcessParser::getSysUpTime() {
   return 0;
 }
 
-std::string ProcessParser::getProcUpTime(const string pid) {
+string ProcessParser::getProcUpTime(const string pid) {
   try {
     return to_string(float(
         stof(fetchValue(Path::basePath() + pid + "/" + Path::statPath(), 13)) / sysconf(_SC_CLK_TCK)));
   }
-  catch (std::runtime_error &e) {
+  catch (runtime_error &e) {
     throw e;
   }
   catch (exception &e) {
@@ -123,7 +123,7 @@ int ProcessParser::getNumberOfCores() {
       return stoi(result);
     }
   }
-  catch (std::invalid_argument &e) {
+  catch (invalid_argument &e) {
     return 0;
   }
   catch (exception &e) {
@@ -141,11 +141,11 @@ string ProcessParser::getSysKernelVersion() {
   }
 }
 
-std::string ProcessParser::getVmSize(const string pid) {
+string ProcessParser::getVmSize(const string pid) {
   try {
     return to_string(stof(fetchValue(Path::basePath() + pid + Path::statusPath(), 1, "VmData")) / float(1024 * 1024));
   }
-  catch (std::runtime_error &e) {
+  catch (runtime_error &e) {
     throw e;
   }
   catch (exception &e) {
@@ -158,7 +158,7 @@ int ProcessParser::getTotalNumberOfProcesses() {
   try {
     return stoi(fetchValue(Path::basePath() + Path::statPath(), 1, "processes"));
   }
-  catch (std::invalid_argument &e) {
+  catch (invalid_argument &e) {
     return 0;
   }
   catch (exception &e) {
@@ -170,7 +170,7 @@ int ProcessParser::getNumberOfRunningProcesses() {
   try {
     return stoi(fetchValue(Path::basePath() + Path::statPath(), 1, "procs_running"));
   }
-  catch (std::invalid_argument &e) {
+  catch (invalid_argument &e) {
     return 0;
   }
   catch (exception &e) {
@@ -181,12 +181,12 @@ int ProcessParser::getNumberOfRunningProcesses() {
 string ProcessParser::getOSName() {
   try {
     string line = fetchValue("/etc/os-release", 0, "PRETTY_NAME") + fetchValue("/etc/os-release", 1, "PRETTY_NAME");
-    std::size_t found = line.find("=") + 1;
+    size_t found = line.find("=") + 1;
     string result = line.substr(found);
-    result.erase(std::remove(result.begin(), result.end(), '"'), result.end());
+    result.erase(remove(result.begin(), result.end(), '"'), result.end());
     return result;
   }
-  catch (std::invalid_argument &e) {
+  catch (invalid_argument &e) {
     return 0;
   }
   catch (exception &e) {
@@ -216,7 +216,7 @@ vector<string> ProcessParser::getSysCpuPercent(string coreNumber) {
   try {
     return fetchValues(Path::basePath() + Path::statPath(), "cpu" + coreNumber);
   }
-  catch (std::invalid_argument &e) {
+  catch (invalid_argument &e) {
     return vector<string>{};
   }
   catch (exception &e) {
@@ -233,14 +233,14 @@ string ProcessParser::getProcUser(const string pid) {
     string name = ("x:" + result);
     string line;
     // Searching for name of the user with selected UID
-    while (std::getline(stream, line)) {
-      if (line.find(name) != std::string::npos) {
+    while (getline(stream, line)) {
+      if (line.find(name) != string::npos) {
         result = line.substr(0, line.find(":"));
         return result;
       }
     }
   }
-  catch (std::runtime_error &e) {
+  catch (runtime_error &e) {
     throw e;
   }
 
@@ -250,7 +250,7 @@ string ProcessParser::getProcUser(const string pid) {
   return "";
 }
 
-std::string ProcessParser::getCpuPercent(const string pid) {
+string ProcessParser::getCpuPercent(const string pid) {
   string line;
   string value;
   float result;
@@ -273,7 +273,7 @@ std::string ProcessParser::getCpuPercent(const string pid) {
     float seconds = uptime - (starttime / freq);
     result = 100.0 * ((total_time / freq) / seconds);
   }
-  catch (std::runtime_error &e) {
+  catch (runtime_error &e) {
     throw e;
   }
   catch (exception &e) {
@@ -311,7 +311,7 @@ float ProcessParser::getSysRamPercent() {
   float buffers = 0;
   try {
     ifstream stream = Util::getStream((Path::basePath() + Path::memInfoPath()));
-    while (std::getline(stream, line)) {
+    while (getline(stream, line)) {
       if (total_mem != 0 && free_mem != 0)
         break;
       if (line.compare(0, name1.size(), name1) == 0) {
@@ -341,7 +341,7 @@ float ProcessParser::getSysRamPercent() {
   return float(100.0 * (1 - (free_mem / (total_mem - buffers))));
 }
 
-std::string ProcessParser::PrintCpuStats(std::vector<std::string> values1, std::vector<std::string> values2) {
+string ProcessParser::PrintCpuStats(vector<string> values1, vector<string> values2) {
 /*
 Because CPU stats can be calculated only if you take measures in two different time,
 this function has two parameters: two vectors of relevant values.

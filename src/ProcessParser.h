@@ -38,10 +38,10 @@ class ProcessParser {
 
   static string getCmd(const string pid);
   static vector<string> getPidList();
-  static std::string getVmSize(const string pid);
-  static std::string getCpuPercent(const string pid);
+  static string getVmSize(const string pid);
+  static string getCpuPercent(const string pid);
   static long int getSysUpTime();
-  static std::string getProcUpTime(const string pid);
+  static string getProcUpTime(const string pid);
   static string getProcUser(const string pid);
   static int getNumberOfCores();
   static vector<string> getSysCpuPercent(string coreNumber = "");
@@ -53,7 +53,7 @@ class ProcessParser {
   static int getTotalNumberOfProcesses();
   static int getNumberOfRunningProcesses();
   static string getOSName();
-  static std::string PrintCpuStats(std::vector<std::string> values1, std::vector<std::string> values2);
+  static string PrintCpuStats(vector<string> values1, vector<string> values2);
   static bool isPidExisting(const string pid);
 
 };

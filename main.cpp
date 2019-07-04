@@ -24,7 +24,7 @@ void writeSysInfoToConsole(SysInfo sys, WINDOW *sys_win) {
   wattroff(sys_win, COLOR_PAIR(1));
   mvwprintw(sys_win, 5, 2, "Other cores:");
   wattron(sys_win, COLOR_PAIR(1));
-  std::vector<std::string> val = sys.getCoresStats();
+  vector<string> val = sys.getCoresStats();
   for (int i = 0; i < val.size(); i++) {
     mvwprintw(sys_win, (6 + i), 2, val[i].c_str());
   }
@@ -40,7 +40,7 @@ void writeSysInfoToConsole(SysInfo sys, WINDOW *sys_win) {
   wrefresh(sys_win);
 }
 
-void getProcessListToConsole(std::vector<string> processes, WINDOW *win) {
+void getProcessListToConsole(vector<string> processes, WINDOW *win) {
 
   wattron(win, COLOR_PAIR(2));
   mvwprintw(win, 1, 2, "PID:");
@@ -75,7 +75,7 @@ void printMain(SysInfo sys, ProcessContainer procs) {
     writeSysInfoToConsole(sys, sys_win);
 
     procs.refreshList();
-    std::vector<std::vector<std::string>> processes = procs.getList();
+    vector<vector<string>> processes = procs.getList();
     getProcessListToConsole(processes[counter], proc_win);
 
     wrefresh(sys_win);
@@ -105,6 +105,6 @@ int main(int argc, char *argv[]) {
     cout << "Failed to fetch system info. Exiting!";
     return 0;
   }
-  //std::string s = writeToConsole(sys);
+  //string s = writeToConsole(sys);
   return 0;
 }

@@ -4,42 +4,41 @@
 #include "ProcessParser.h"
 
 using namespace std;
-/*
-Basic class for Process representation
-It contains relevant attributes as shown below
-*/
+
 class Process {
- private:
-  string pid;
-  string user;
-  string cmd;
-  string cpu;
-  string mem;
-  string upTime;
 
  public:
-  Process(string pid) {
-    this->pid = pid;
+  Process(const string &pid) {
+    this->pid_ = pid;
     try {
-      this->user = ProcessParser::getProcUser(pid);
-      this->mem = ProcessParser::getVmSize(pid);
-      this->cmd = ProcessParser::getCmd(pid);
-      if (cmd.empty()) {
-        this->cmd = string(70, ' ');
+      this->user_ = ProcessParser::getProcUser(pid);
+      this->mem_ = ProcessParser::getVmSize(pid);
+      this->cmd_ = ProcessParser::getCmd(pid);
+      if (cmd_.empty()) {
+        this->cmd_ = string(70, ' ');
       }
-      this->upTime = ProcessParser::getProcUpTime(pid);
-      this->cpu = ProcessParser::getCpuPercent(pid);
+      this->up_time_ = ProcessParser::getProcUpTime(pid);
+      this->cpu_ = ProcessParser::getCpuPercent(pid);
     }
     catch (exception &e) {
       throw e;
     }
   }
-  void setPid(int pid);
-  string getPid() const;
-  string getUser() const;
-  string getCmd() const;
-  int getCpu() const;
-  int getMem() const;
-  string getUpTime() const;
-  string getProcess();
+  void pid(int pid);
+  string pid() const;
+  string user() const;
+  string cmd() const;
+  int cpu() const;
+  int mem() const;
+  string up_time() const;
+  string process();
+
+ private:
+  string pid_;
+  string user_;
+  string cmd_;
+  string cpu_;
+  string mem_;
+  string up_time_;
+
 };

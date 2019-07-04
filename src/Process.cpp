@@ -1,42 +1,38 @@
-//
-// Created by Razvan Lung on 2019-07-04.
-//
-
 #include "Process.h"
 
-void Process::setPid(int pid) {
-  this->pid = pid;
+void Process::pid(int pid) {
+  this->pid_ = pid;
 }
-string Process::getPid() const {
-  return this->pid;
+string Process::pid() const {
+  return this->pid_;
 }
 
-string Process::getProcess() {
-  if (!ProcessParser::isPidExisting(this->pid))
+string Process::process() {
+  if (!ProcessParser::isPidExisting(this->pid_))
     return "";
-  this->mem = ProcessParser::getVmSize(this->pid);
-  this->upTime = ProcessParser::getProcUpTime(this->pid);
-  this->cpu = ProcessParser::getCpuPercent(this->pid);
+  this->mem_ = ProcessParser::getVmSize(this->pid_);
+  this->up_time_ = ProcessParser::getProcUpTime(this->pid_);
+  this->cpu_ = ProcessParser::getCpuPercent(this->pid_);
 
-  return this->pid + "   " + this->user + "   " + this->mem + "   " + this->cpu + "   " + this->upTime + "   "
-      + this->cmd.substr(0, 50) + string(20, ' ');
+  return this->pid_ + "   " + this->user_ + "   " + this->mem_ + "   " + this->cpu_ + "   " + this->up_time_ + "   "
+      + this->cmd_.substr(0, 50) + string(20, ' ');
 }
 
-std::string Process::getUser() const {
-  return this->user;
+string Process::user() const {
+  return this->user_;
 }
 
-std::string Process::getCmd() const {
-  return this->cmd;
+string Process::cmd() const {
+  return this->cmd_;
 }
 
-int Process::getCpu() const {
-  return std::stoi(this->cpu);
+int Process::cpu() const {
+  return stoi(this->cpu_);
 }
 
-int Process::getMem() const {
-  return std::stoi(this->mem);
+int Process::mem() const {
+  return stoi(this->mem_);
 }
-std::string Process::getUpTime() const {
-  return this->upTime;
+string Process::up_time() const {
+  return this->up_time_;
 }

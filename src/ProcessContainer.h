@@ -8,13 +8,13 @@
 class ProcessContainer {
 
  private:
-  std::vector<Process> _list{};
+  vector<Process> _list{};
  public:
   ProcessContainer() {
     this->refreshList();
   }
   int refreshList();
-  std::string printList();
-  std::vector<std::vector<std::string>> getList();
-  std::vector<std::string> getList(int pageNumber);
+  string printList();
+  vector<vector<string>> getList();
+  vector<string> getList(int pageNumber);
 };
