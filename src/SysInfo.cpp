@@ -5,7 +5,6 @@
 #include "SysInfo.h"
 
 void SysInfo::GetOtherCores(int _size) {
-//when number of cores is detected, vectors are modified to fit incoming data
   cores_stats_ = vector<string>{};
   cores_stats_.resize(_size);
   last_cpu_cores_stats = vector<vector<string>>{};
@@ -21,12 +20,11 @@ void SysInfo::SetLastCpuMeasures() {
   last_cpu_stats_ = ProcessParser::GetSysCpuPercent();
 }
 void SysInfo::setCpuCoresStats() {
-// Getting data from files (previous data is required)
   for (int i = 0; i < current_cpu_cores_stats_.size(); i++) {
     current_cpu_cores_stats_[i] = ProcessParser::GetSysCpuPercent(to_string(i));
   }
+
   for (int i = 0; i < current_cpu_cores_stats_.size(); i++) {
-    // after acquirement of data we are calculating every core percentage of usage
     cores_stats_[i] = ProcessParser::PrintCpuStats(last_cpu_cores_stats[i], current_cpu_cores_stats_[i]);
   }
   last_cpu_cores_stats = current_cpu_cores_stats_;
