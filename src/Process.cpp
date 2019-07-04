@@ -4,36 +4,39 @@
 
 #include "Process.h"
 
-void Process::setPid(int pid) { pid = pid; }
-string Process::getPid() const { return pid; }
+void Process::setPid(int pid) {
+  this->pid = pid;
+}
+string Process::getPid() const {
+  return this->pid;
+}
 
 string Process::getProcess() {
-  if (!ProcessParser::isPidExisting(pid))
+  if (!ProcessParser::isPidExisting(this->pid))
     return "";
+  this->mem = ProcessParser::getVmSize(this->pid);
+  this->upTime = ProcessParser::getProcUpTime(this->pid);
+  this->cpu = ProcessParser::getCpuPercent(this->pid);
 
-  mem = ProcessParser::getVmSize(pid);
-  upTime = ProcessParser::getProcUpTime(pid);
-  cpu = ProcessParser::getCpuPercent(pid);
-
-  return pid + "   " + user + "   " + mem + "   " + cpu + "   " + upTime + "   "
-      + cmd.substr(0, 50) + string(20, ' ');
+  return this->pid + "   " + this->user + "   " + this->mem + "   " + this->cpu + "   " + this->upTime + "   "
+      + this->cmd.substr(0, 50) + string(20, ' ');
 }
 
 std::string Process::getUser() const {
-  return user;
+  return this->user;
 }
 
 std::string Process::getCmd() const {
-  return cmd;
+  return this->cmd;
 }
 
 int Process::getCpu() const {
-  return std::stoi(cpu);
+  return std::stoi(this->cpu);
 }
 
 int Process::getMem() const {
-  return std::stoi(mem);
+  return std::stoi(this->mem);
 }
 std::string Process::getUpTime() const {
-  return upTime;
+  return this->upTime;
 }

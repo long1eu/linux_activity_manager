@@ -6,11 +6,11 @@
 
 int ProcessContainer::refreshList() {
   std::vector<std::string> pidList = ProcessParser::getPidList();
-  _list.clear();
+  this->_list.clear();
   for (int i = 0; i < pidList.size(); i++) {
     try {
       Process proc(pidList[i]);
-      _list.push_back(proc);
+      this->_list.push_back(proc);
     }
     catch (exception &e) {
       pidList.erase(pidList.begin() + i);
@@ -20,8 +20,8 @@ int ProcessContainer::refreshList() {
 }
 std::string ProcessContainer::printList() {
   std::string result = "";
-  for (int i = 0; i < _list.size(); i++) {
-    result += _list[i].getProcess();
+  for (int i = 0; i < this->_list.size(); i++) {
+    result += this->_list[i].getProcess();
   }
   return result;
 }
