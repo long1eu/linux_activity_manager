@@ -9,16 +9,16 @@ class Process {
 
  public:
   Process(const string &pid) {
-    this->pid_ = pid;
+    pid_ = pid;
     try {
-      this->user_ = ProcessParser::getProcUser(pid);
-      this->mem_ = ProcessParser::getVmSize(pid);
-      this->cmd_ = ProcessParser::getCmd(pid);
+      user_ = ProcessParser::getProcUser(pid);
+      mem_ = ProcessParser::getVmSize(pid);
+      cmd_ = ProcessParser::getCmd(pid);
       if (cmd_.empty()) {
-        this->cmd_ = string(70, ' ');
+        cmd_ = string(70, ' ');
       }
-      this->up_time_ = ProcessParser::getProcUpTime(pid);
-      this->cpu_ = ProcessParser::getCpuPercent(pid);
+      up_time_ = ProcessParser::getProcUpTime(pid);
+      cpu_ = ProcessParser::getCpuPercent(pid);
     }
     catch (exception &e) {
       throw e;

@@ -1,38 +1,38 @@
 #include "Process.h"
 
 void Process::pid(int pid) {
-  this->pid_ = pid;
+  pid_ = pid;
 }
 string Process::pid() const {
-  return this->pid_;
+  return pid_;
 }
 
 string Process::process() {
-  if (!ProcessParser::isPidExisting(this->pid_))
+  if (!ProcessParser::isPidExisting(pid_))
     return "";
-  this->mem_ = ProcessParser::getVmSize(this->pid_);
-  this->up_time_ = ProcessParser::getProcUpTime(this->pid_);
-  this->cpu_ = ProcessParser::getCpuPercent(this->pid_);
+  mem_ = ProcessParser::getVmSize(pid_);
+  up_time_ = ProcessParser::getProcUpTime(pid_);
+  cpu_ = ProcessParser::getCpuPercent(pid_);
 
-  return this->pid_ + "   " + this->user_ + "   " + this->mem_ + "   " + this->cpu_ + "   " + this->up_time_ + "   "
-      + this->cmd_.substr(0, 50) + string(20, ' ');
+  return pid_ + "   " + user_ + "   " + mem_ + "   " + cpu_ + "   " + up_time_ + "   "
+      + cmd_.substr(0, 50) + string(20, ' ');
 }
 
 string Process::user() const {
-  return this->user_;
+  return user_;
 }
 
 string Process::cmd() const {
-  return this->cmd_;
+  return cmd_;
 }
 
 int Process::cpu() const {
-  return stoi(this->cpu_);
+  return stoi(cpu_);
 }
 
 int Process::mem() const {
-  return stoi(this->mem_);
+  return stoi(mem_);
 }
 string Process::up_time() const {
-  return this->up_time_;
+  return up_time_;
 }
