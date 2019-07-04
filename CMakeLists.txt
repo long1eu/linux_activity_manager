@@ -7,11 +7,11 @@ set(CMAKE_CXX_FLAGS "-lncurses")
 add_executable(
         activity_manager
         main.cpp
-        Process.h
-        ProcessParser.h
-        ProcessContainer.h
-        SysInfo.h
-        constants.h
-        util.h)
+        src/Process.h
+        src/ProcessParser.h
+        src/ProcessContainer.h
+        src/SysInfo.h
+        src/constants.h
+        src/util.h)
 
 target_link_libraries(${PROJECT_NAME} ncurses)

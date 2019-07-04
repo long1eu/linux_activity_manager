@@ -7,9 +7,9 @@
 #include <time.h>
 #include <sstream>
 #include <iomanip>
-#include "util.h"
-#include "SysInfo.h"
-#include "ProcessContainer.h"
+#include "src/util.h"
+#include "src/SysInfo.h"
+#include "src/ProcessContainer.h"
 
 using namespace std;
 
